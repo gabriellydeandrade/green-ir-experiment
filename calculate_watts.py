@@ -3,8 +3,9 @@ import csv
 import toml
 
 
-def watts(duration_hours: float, kwhs: float):
-    return (1000 * kwhs) / duration_hours
+def kwatts(duration_hours: float, watt: float):
+    conversion = (watt / 1000)
+    return conversion / duration_hours #‘the energy consumed at a rate of one kilowatt for one hour’.
 
 
 def hours(duration_seconds: float):
@@ -17,14 +18,18 @@ def calculate_watts():
         reader = csv.reader(f)
         next(reader)
         for row in reader:
-            experiment = row[2]
+            experiment = row[1]
             duration_seconds = float(row[3])
-            power_kwh = float(row[5])
-
             duration_hours = hours(duration_seconds)
-            power_watts = watts(duration_hours, power_kwh)
 
-            data[experiment] = {"name": experiment, "watts": power_watts, "running_time": duration_hours}
+            emissions = float(row[4])
+
+            cpu_power = float(row[6])
+            gpu_power = float(row[7])
+            ram_power = float(row[8])
+            power = cpu_power + gpu_power + ram_power
+
+            data[experiment] = {"name": experiment, "carbon_emission": emissions/duration_hours} 
     export = {"experiment": []}
     for k, v in data.items():
         export["experiment"].append(v)

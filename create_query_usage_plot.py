@@ -18,7 +18,7 @@ NUM_ESTIMATE = 200
 query_estimates = [1_000, 1_0_000, 1_00_000, 1_000_000, 10_000_000]
 
 # %
-with open("experiments.toml", "r") as f:
+with open("new_experiments.toml", "r") as f:
     experiment_data = toml.load(f)
 
 equivalent_emissions = experiment_data["equivalent_emissions"]
@@ -27,7 +27,7 @@ s_emissions = "Emissions (kgC$0_2$e)"
 s_queries = "Number of Queries (per hour)"
 s_experiment = "Experiment"
 emissions_equivalent_per_query = {s_emissions: [], s_queries: [], s_experiment: []}
-with open("query_power_usage.csv", "r") as f:
+with open("emissions.csv", "r") as f:
     reader = csv.reader(f)
     for row in reader:
         if row[0] == "True":
@@ -43,7 +43,7 @@ sns.set()
 sns.set_style("whitegrid")
 df = pd.DataFrame(emissions_equivalent_per_query)
 fig, ax = plt.subplots()
-sns.pointplot(data=df, y=s_emissions, x=s_queries, hue=s_experiment, palette="colorblind", ax=ax, log_scale=10)
+sns.pointplot(data=df, y=s_emissions, x=s_queries, hue=s_experiment, palette="colorblind", ax=ax)
 ax.tick_params(which="both", bottom=True, left=True)
 plt.rc("axes", labelsize=16)
 plt.rc("ytick", labelsize=12)
